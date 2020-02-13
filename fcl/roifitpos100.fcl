@@ -3,14 +3,16 @@
 # David Adams
 # February 2020
 #
-#
+# Top-level configuration to generate pulser gain calibration summary plots
+# and histograms for the APA 3 TPC-side collection plane (apa3z).
+
 #include "run_dataprep.fcl"
 
 services.RawDigitPrepService.AdcChannelToolNames: [
   "digitReader",                # Read RawDigit
+  "pdsp_sticky_codes_ped",      # Flag sticky codes
   "pd_adcPedestalFit",          # Find pedestal
   "adcSampleFiller",            # Subtract pedestal, trivial calibration
-  "pdsp_sticky_codes_ped",      # Flag sticky codes
   "pdsp_adcMitigate",           # Mitigate sticky codes
   #"pdsp_timingMitigate",        # Mitigate FEMB302 timing
   #"adcCorrectUndershoot",       # correct undershoot
@@ -39,15 +41,15 @@ tools.adcRoiFitter: {
   RoiPlotPadX: 4
   RoiPlotPadY: 4
   SumNegate: false
-  SumPlotPadX: 4
-  SumPlotPadY: 4
+  SumPlotPadX: 0
+  SumPlotPadY: 0
   RunDataTool: ""
   TickOffsetTool: ""
   SumHists: []
   RoiRootFileName: ""
   SumRootFileName: ""
   ChanSumRootFileName: ""
-  ChannelRanges: [apa3z]
+  ChannelRanges: []
   ChanSumHists: []
   ChannelLineModulus: 0
   ChannelLinePattern: []

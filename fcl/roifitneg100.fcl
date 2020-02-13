@@ -1,3 +1,6 @@
 #include "roifitpos100.fcl"
 
+tools.adcThresholdSignalFinder.Threshold: 100
+tools.adcThresholdSignalFinder.FlagPositive: false
+tools.adcThresholdSignalFinder.FlagNegative: true
 

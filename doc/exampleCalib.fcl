@@ -1,11 +1,33 @@
 #include "roifitpos100.fcl"
 
 # Set channel range for processing and for viewing ROIS.
-physics.producers.dataprep.ChannelGroups: [apa1x]
-tools.adcRoiViewer.ChannelRanges:         [apa1x]
+# E.g. apa1x, femb101x or femb101x01
+physics.producers.dataprep.ChannelGroups: [femb101x]
+tools.adcRoiFitter.ChannelRanges:         [femb101x]
 
-# Set threhold and charge sign for signal finding.
+# Set threshold and charge sign for signal finding.
+# Calibration jobs are run separately for each sign.
+# Theshold should be set to reject all noise and keep all pulser signals.
 tools.adcThresholdSignalFinder.Threshold: 100
 tools.adcThresholdSignalFinder.FlagPositive: true
 tools.adcThresholdSignalFinder.FlagNegative: false
+
+# Plot ROIs and their fits.
+# RoiPlotPad x RoiPlotPadX on each page.
+# A maximum of MaxRoiPlots pages are produced.
+tools.adcRoiFitter.MaxRoiPlots: 0
+tools.adcRoiFitter.RoiPlotPadX: 4
+tools.adcRoiFitter.RoiPlotPadY: 4
+
+# Make plots of the summary histograms.
+# One plot for each channel with
+# SumPlotPad x SumPlotPadX on each page.
+tools.adcRoiFitter.SumPlotPadX: 0
+tools.adcRoiFitter.SumPlotPadY: 4
+
+# Names for the ROI, summary and channel summary histogram files.
+# If blank, the histograms are not saved.
+tools.adcRoiFitter.RoiRootFileName: ""
+tools.adcRoiFitter.SumRootFileName: ""
+tools.adcRoiFitter.ChanSumRootFileName: "roicha.root"
 
