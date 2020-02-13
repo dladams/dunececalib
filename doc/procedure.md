@@ -1,6 +1,6 @@
-Calibration procedure
+## Calibration procedure
 
-David Adams
+David Adams   
 February 2020
 
 The goal is to evaluate the area gain for each channel based on
@@ -15,5 +15,5 @@ A height calibration and shaping time measurement for each channel can also be o
 ### 1. Area evaluation
 
 We begin by evaluating the mean area for each channel at each DAC setting.
-The starting configuration [roifitpos100.fcl](../fcl/roifitpos100.fcl) runs the tool `AdcRoiViewer`
+The starting top-level configuration [roifitpos100.fcl](../fcl/roifitpos100.fcl) runs the tool `AdcRoiViewer`
 with configuration `adcRoiFitter`.
