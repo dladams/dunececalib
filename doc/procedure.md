@@ -15,7 +15,7 @@ A height calibration and shaping time measurement for each channel can also be o
 The following sections provide step-by-step instructions for generating a calibration
 with a combination of dunetpc lar and Root jobs making use of the scripts and configuration
 files provided in this package ([dunececalib](https://github.com/dladams/dunececalib)).
-For instructions on getting started, see the duneproc [tutorial](https://github.com/dladams/duneproc/doc/tutorial.txt).
+For instructions on getting started, see the duneproc [tutorial](https://github.com/dladams/duneproc/master/doc/tutorial.txt).
 
 ### 1. Area evaluation
 
