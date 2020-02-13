@@ -82,4 +82,18 @@ record those histograms and rerun over the desired events and channel range.
 
 ### Gain evaluation
 
-Run jobs like these for each sign DAC setting and channel range.
+Run jobs like these for each sign, DAC setting and channel range.
+Then, for each channel, we can graph area vs. signed DAC setting
+and fit these to extract slopes in units of (ADC count)/(DAC step).
+These can then be inverted and normalized, e.g.
+
+> DAC step = 21.4 ke
+
+to obtain the gains.
+
+The utility class [AdcCalibGraphs](../src/AdcCalibGraphs.h) can help with this task.
+It can make plots and do fits for area, height shaping time and more.
+The user must first create and register an [AdcCalibData](../src/AdcCalibData.h)
+that describes a calibration dataset with a DAC setting, run number and full path to
+the channel summary Root file for each entry.
+
