@@ -1,0 +1,11 @@
+#include "roifitpos100.fcl"
+
+# Set channel range for processing and for viewing ROIS.
+physics.producers.dataprep.ChannelGroups: [apa1x]
+tools.adcRoiViewer.ChannelRanges:         [apa1x]
+
+# Set threhold and charge sign for signal finding.
+tools.adcThresholdSignalFinder.Threshold: 100
+tools.adcThresholdSignalFinder.FlagPositive: true
+tools.adcThresholdSignalFinder.FlagNegative: false
+
