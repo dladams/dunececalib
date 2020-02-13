@@ -12,6 +12,11 @@ where A is the raw ADC signal, p is the pedestal and g is the gain.
 
 A height calibration and shaping time measurement for each channel can also be obtained.
 
+The following sections provide step-by-step instructions for generating a calibration
+with a combination of dunetpc lar and Root jobs making use of the scripts and configuration
+files provided in this package ([dunececalib](https://github.com/dladams/dunececalib)).
+For instructions on getting started, see the duneproc [tutorial](https://github.com/dladams/duneproc/doc/tutorial.txt).
+
 ### 1. Area evaluation
 
 We begin by evaluating the mean area for each channel at each DAC setting.
