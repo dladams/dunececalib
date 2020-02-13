@@ -1,0 +1,11 @@
+xroot://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/protodune/np04/beam/detector/None/raw/08/79/33/76/np04_raw_run006045_0001_dl1.root
+xroot://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/protodune/np04/beam/detector/None/raw/08/79/33/69/np04_raw_run006045_0001_dl2.root
+xroot://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/protodune/np04/beam/detector/None/raw/08/79/33/70/np04_raw_run006045_0001_dl3.root
+xroot://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/protodune/np04/beam/detector/None/raw/08/79/33/79/np04_raw_run006045_0001_dl4.root
+xroot://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/protodune/np04/beam/detector/None/raw/08/79/33/65/np04_raw_run006045_0001_dl5.root
+xroot://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/protodune/np04/beam/detector/None/raw/08/79/30/62/np04_raw_run006045_0001_dl6.root
+xroot://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/protodune/np04/beam/detector/None/raw/08/79/33/83/np04_raw_run006045_0001_dl7.root
+xroot://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/protodune/np04/beam/detector/None/raw/08/79/33/68/np04_raw_run006045_0001_dl8.root
+xroot://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/protodune/np04/beam/detector/None/raw/08/79/33/66/np04_raw_run006045_0001_dl9.root
+xroot://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/protodune/np04/beam/detector/None/raw/08/79/33/67/np04_raw_run006045_0001_dl10.root
+xroot://fndca1.fnal.gov:1094/pnfs/fnal.gov/usr/dune/tape_backed/dunepro/protodune/np04/beam/detector/None/raw/08/79/32/29/np04_raw_run006045_0001_dl11.root
