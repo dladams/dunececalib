@@ -26,6 +26,10 @@ tools.adcThresholdSignalFinder.Threshold: 100
 tools.adcThresholdSignalFinder.FlagPositive: true
 tools.adcThresholdSignalFinder.FlagNegative: false
 
+# Field that appears in channnel summary plot labels.
+# Useful to distinguish DAC signs.
+tools.adcRoiFitter.PlotLabels: ["pos"]
+
 #######################################################################
 # Remaining are for debugging.
 # #####################################################################
