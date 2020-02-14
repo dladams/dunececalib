@@ -3,14 +3,14 @@
 # David Adams
 # February 2020
 #
-# Top-level configuration to generate pulser gain calibration summary plots
+# Configuration to generate pulser gain calibration summary plots
 # and histograms for the APA 3 TPC-side collection plane (apa3z).
-
-#include "run_dataprep.fcl"
+#
+# Caller must define sticky_code_flagger before including this.
 
 services.RawDigitPrepService.AdcChannelToolNames: [
   "digitReader",                # Read RawDigit
-  "pdsp_sticky_codes_ped",      # Flag sticky codes
+  @local::sticky_code_flagger,  # Flag sticky codes
   "pd_adcPedestalFit",          # Find pedestal
   "adcSampleFiller",            # Subtract pedestal, trivial calibration
   "pdsp_adcMitigate",           # Mitigate sticky codes

@@ -1,3 +1,17 @@
+# Include top level processing: run_dataprep or run_dataprep_apa7
+#include "run_dataprep_apa7.fcl"
+
+# Set tool name for sticky code list.
+sticky_code_flagger: pdsp_sticky_codes_ped
+#sticky_code_flagger: apa7cold_sticky_codes_ped
+#sticky_code_flagger: apa7warm_sticky_codes_ped
+
+# Set the channel status list.
+services.ChannelStatusService: @local::pdsp_channel_status_2018
+#services.ChannelStatusService: @local::pdsp_channel_status_nov2019
+#services.ChannelStatusService: @local::apa7cold_channel_status
+#services.ChannelStatusService: @local::apa7warm_channel_status
+
 #include "roifitpos100.fcl"
 
 # Set channel range for processing and for viewing ROIS.
@@ -11,6 +25,10 @@ tools.adcRoiFitter.ChannelRanges:         [femb101x]
 tools.adcThresholdSignalFinder.Threshold: 100
 tools.adcThresholdSignalFinder.FlagPositive: true
 tools.adcThresholdSignalFinder.FlagNegative: false
+
+#######################################################################
+# Remaining are for debugging.
+# #####################################################################
 
 # Plot ROIs and their fits.
 # RoiPlotPad x RoiPlotPadX on each page.
