@@ -38,6 +38,10 @@ You can find my file lists on the dunegpvm machines at /dune/data2/users/dladams
 These are pnfs locations.
 To get the xrootd location, replace the leading "/pnfs" with "xroot://fndca1.fnal.gov:1094/pnfs/fnal.gov".
 
+If jobs are to be run with duneproc, then these file lists should be stored in
+$HOME/data/dune/datasets or any subdirectory thereof and may contain logical file names
+(base name only), xrootd URLs or pnfs paths.
+
 ### 2. Area evaluation
 
 We begin by running lar jobs to evaluate the mean area for each channel at each DAC setting.
