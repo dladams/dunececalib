@@ -1,0 +1,4 @@
+<lcgdict>
+  <class name="AdcCalibData" noStreamer="true"/>
+  <class name="AdcCalibGraphs" noStreamer="true"/>
+</lcgdict>

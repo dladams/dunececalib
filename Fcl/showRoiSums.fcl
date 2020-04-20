@@ -1,0 +1,12 @@
+
+# showRoiSums.fcl
+#
+# David Adams
+# April 2020
+#
+# Show summary plots in ROI viewer e.g. that used for 
+# CE calibration.
+
+tools.adcRoiFitter.SumPlotPadX: 4
+tools.adcRoiFitter.SumPlotPadY: 4
+
