@@ -37,6 +37,7 @@ tools.adcRoiFitter.PlotLabels: ["pos"]
 # Plot ROIs and their fits.
 # RoiPlotPad x RoiPlotPadX on each page.
 # A maximum of MaxRoiPlots pages are produced.
+tools.adcRoiFitter.RoiPlotOpt: 0  # 0=none, 1=separate events, 2=all events together
 tools.adcRoiFitter.MaxRoiPlots: 0
 tools.adcRoiFitter.RoiPlotPadX: 4
 tools.adcRoiFitter.RoiPlotPadY: 4
