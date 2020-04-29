@@ -6,7 +6,9 @@
 #include <string>
 #include <map>
 #include <memory>
+#include "dune/DuneInterface/Tool/IndexMapTool.h"
 #include "dune/DuneCommon/TPadManipulator.h"
+
 #include "TGraphErrors.h"
 
 class TF1;
@@ -62,12 +64,12 @@ public:
   void fixHeightSlope(double slopHeight);
   void fixHeightOffset(double offsHeight =0.0);
   void fixHeightPedestal(double pedeHeight =0.0);
-  void fixHeightPedestalOffset(double pedeHeight =0.0);
+  void fixHeightShift(double pedeHeight =0.0);
   void fixHeightNegScale(double nscaHeight =1.0);
   void fixAreaSlope(double slopArea);
   void fixAreaOffset(double offsArea =0.0);
   void fixAreaPedestal(double pedeArea =0.0);
-  void fixAreaPedestalOffset(double pedeArea =0.0);
+  void fixAreaShift(double pedeArea =0.0);
   void fixAreaNegScale(double nscaArea =1.0);
   
   // Retrieve the ifun'th fit function for variable varName. Null for no fit.
@@ -181,6 +183,7 @@ private:
   GraphNameMap m_chsgras;
   GraphNameMap m_chsgrasBad;
   GraphNameMap m_chsgrasNoisy;
+  GraphNameMap m_chsgrasBpu;
   PadNameMap m_chspads;
   bool m_allowMissingRuns;
   int m_errorScaling;
@@ -192,6 +195,7 @@ private:
   Index m_graphChannelBegin;
   Index m_graphChannelEnd;
   const lariov::ChannelStatusProvider* m_pChannelStatusProvider;
+  const IndexMapTool* m_pchanstat;
 
 };
 

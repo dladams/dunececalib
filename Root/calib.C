@@ -13,7 +13,8 @@ AdcCalibGraphs*
 calib(string dstName ="", string crName ="", bool usePulser =false,
       double xfminIn =-101, double xfmaxIn =0.0,
       bool showExtraDsts =false,
-      float varyOffset =0.0, float varyPedestal =0.0, float varyPedOff =0.0,
+      float varyOffset =0.0, float varyPedestal =0.0,
+      float varyShift =0.0, float varyNegScale =0.0,
       int icha1In =-1, int nchaIn =-1) {
   using Name = std::string;
   using Index = unsigned int;
@@ -111,14 +112,20 @@ calib(string dstName ="", string crName ="", bool usePulser =false,
       cg.getFitFunction("Area", 0)->SetParameter(2, varyPedestal);
       cg.getFitFunction("Height", 0)->SetParameter(2, varyPedestal);
     }
-    if ( varyPedOff == 0.0 ) {
-      cg.fixHeightPedestalOffset(0.0);
-      cg.fixAreaPedestalOffset(0.0);
+    if ( varyShift == 0.0 ) {
+      cg.fixHeightShift(0.0);
+      cg.fixAreaShift(0.0);
     } else {
-      cg.getFitFunction("Area", 0)->SetParameter(4, varyPedOff);
-      cg.getFitFunction("Height", 0)->SetParameter(4, varyPedOff);
+      cg.getFitFunction("Area", 0)->SetParameter(4, varyShift);
+      cg.getFitFunction("Height", 0)->SetParameter(4, varyShift);
     }
-    cg.fixHeightNegScale(1.0);
+    if ( varyNegScale == 0.0 ) {
+      cg.fixHeightNegScale(1.0);
+      cg.fixAreaNegScale(1.0);
+    } else {
+      cg.getFitFunction("Area", 0)->SetParameter(3, varyNegScale);
+      cg.getFitFunction("Height", 0)->SetParameter(3, varyNegScale);
+    }
     if ( varyOffset == 0.0 ) {
       cg.fixHeightOffset(0.0);
       cg.fixAreaOffset(0.0);
@@ -136,9 +143,6 @@ calib(string dstName ="", string crName ="", bool usePulser =false,
       cg.getFitFunction("Area", 0)->SetParameter(0, varyOffset);
       cg.getFitFunction("Height", 0)->SetParameter(0, varyOffset);
     }
-    //cg.fixAreaOffset(-0.02);
-    cg.fixAreaNegScale(1.0);
-    //cg.fixAreaNegScale(1.025);
   }
   int rstat = cg.makeGraphs(icha1, ncha);
   Index icol = 0;
@@ -164,7 +168,7 @@ calib(string dstName ="", string crName ="", bool usePulser =false,
           cg.makeMultiChannelPads("gres" + varName, 4, 4);
           cg.makeMultiChannelPads("calres" + varName, 4, 4);
         }
-        pcg->drawChannelSummaryPad("Area", "csdof", "", 0, 1000);
+        //pcg->drawChannelSummaryPad("Area", "csdof", "", 0, 1000);
       }
     }
 #if 0

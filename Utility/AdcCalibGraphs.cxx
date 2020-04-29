@@ -1,10 +1,14 @@
 // AdcCalibGraphs.cxx
 
+#define HAVE_CHANNEL_STATUS_SERVICE 0
+
 #include "AdcCalibGraphs.h"
 #include "AdcCalibData.h"
+#include "dune/DuneCommon/LineColors.h"
 #include "dune/DuneCommon/offsetLine.h"
 #include "dune/DuneCommon/StringManipulator.h"
 #include "larevt/CalibrationDBI/Interface/ChannelStatusService.h"
+#include "dune/ArtSupport/DuneToolManager.h"
 #include <string>
 #include <sstream>
 #include <fstream>
@@ -96,8 +100,11 @@ AdcCalibGraphs::AdcCalibGraphs(
     m_labels[varName] = m_dstName + " " + m_crName;
   }
   m_labels["Ratio"] = m_dstName + " " + m_crName;
-#ifdef HAVE_CHANNEL_STATUS
+#if HAVE_CHANNEL_STATUS_SERVICE
   m_pChannelStatusProvider = art::ServiceHandle<lariov::ChannelStatusService>()->provider();
+#else
+  DuneToolManager* ptm = DuneToolManager::instance();
+  m_pchanstat = ptm->getShared<IndexMapTool>("channelStatus");
 #endif
   // Find plot range.
   const AdcCalibData* padt = AdcCalibData::get(m_dstName, m_crName);
@@ -183,7 +190,7 @@ void AdcCalibGraphs::fixAreaPedestal(double val) {
 
 //**********************************************************************
 
-void AdcCalibGraphs::fixHeightPedestalOffset(double val) {
+void AdcCalibGraphs::fixHeightShift(double val) {
   m_fits["Height"][0]->FixParameter(4, val);
   ostringstream sssuf;
   sssuf << " fixD" << val;
@@ -192,7 +199,7 @@ void AdcCalibGraphs::fixHeightPedestalOffset(double val) {
 
 //**********************************************************************
 
-void AdcCalibGraphs::fixAreaPedestalOffset(double val) {
+void AdcCalibGraphs::fixAreaShift(double val) {
   m_fits["Area"][0]->FixParameter(4, val);
   ostringstream sssuf;
   sssuf << " fixD" << val;
@@ -697,8 +704,8 @@ PadPtr AdcCalibGraphs::pad(Name graName, Index icha, Index nx, Index ny) {
         }
       }
     } else {
-      NameVector parNamesOld = {"Slope", "Offset", "Pedestal", "NegScale"};
-      FloatVector parPrecsOld = {2, 3, 1, 3};
+      NameVector parNamesOld = {"Slope", "Offset", "Shift", "Pedestal", "NegScale"};
+      FloatVector parPrecsOld = {2, 3, 3, 1, 3};
       NameVector parNamesPul = {"AdcScale", "Pedestal", "NegScale", "R0", "R1", "R2", "R3", "R4", "R5", "R6", "QVscale"};
       FloatVector parPrecsPul(20, 4);
       parPrecsPul[0] = 1;
@@ -739,9 +746,14 @@ PadPtr AdcCalibGraphs::pad(Name graName, Index icha, Index nx, Index ny) {
       }
     }
   }
-#ifdef HAVE_CHANNEL_STATUS
+#if HAVE_CHANNEL_STATUS_SERVICE
   if ( m_pChannelStatusProvider->IsBad(icha) ) labs.push_back("Bad channel.");
   else if ( m_pChannelStatusProvider->IsNoisy(icha) ) labs.push_back("Noisy channel.");
+#else
+  Index chstat = m_pchanstat->get(icha);
+  if ( chstat == 1 ) labs.push_back("Bad channel.");
+  if ( chstat == 2 ) labs.push_back("Noisy channel.");
+  if ( chstat == 3 ) labs.push_back("Bad pulser.");
 #endif
   ppad.reset(new Pad(nx, ny));
   ppad->add(pgraPad.get(), "P");
@@ -927,7 +939,8 @@ GraphPtr AdcCalibGraphs::channelSummaryGraph(Name varName, Name parName, Name fi
   if ( igm != m_chsgras.end() ) return igm->second;
   GraphPtr pgraSum;
   GraphPtr pgraSumBad;
-  GraphPtr pgraSumNoisy;
+  GraphPtr pgraSumNoi;
+  GraphPtr pgraSumBpu;
   GraphMapMap::const_iterator igmm = m_gras.find(varName);
   if ( igmm == m_gras.end() ) {
     cout << myname << "Variable " << varName << " not found." << endl;
@@ -937,24 +950,36 @@ GraphPtr AdcCalibGraphs::channelSummaryGraph(Name varName, Name parName, Name fi
   float xmax = 0.0;
   int ipt = 0;
   const GraphMap& grfs = igmm->second;
+  LineColors lc;
   for ( GraphMap::value_type igrf : grfs ) {
     int icha = igrf.first;
     bool isBad = false;
-    bool isNoisy = false;
-#ifdef HAVE_CHANNEL_STATUS
+    bool isNoi = false;
+    bool isBpu = false;
+#if HAVE_CHANNEL_STATUS_SERVICE
     isBad = m_pChannelStatusProvider->IsBad(icha);
-    isNoisy = m_pChannelStatusProvider->IsNoisy(icha);
+    isNoi = m_pChannelStatusProvider->IsNoi(icha);
+#else
+    Index chstat = m_pchanstat->get(icha);
+    isBad = chstat == 1;
+    isNoi = chstat == 2;
+    isBpu = chstat == 3;
 #endif
     float xval = icha;
     if ( ! pgraSum ) {
       pgraSum.reset(new TGraphErrors);
       pgraSumBad.reset(new TGraphErrors);
-      pgraSumNoisy.reset(new TGraphErrors);
+      pgraSumNoi.reset(new TGraphErrors);
+      pgraSumBpu.reset(new TGraphErrors);
       pgraSumBad->SetMarkerStyle(24);
-      pgraSumNoisy->SetMarkerStyle(26);
+      pgraSumNoi->SetMarkerStyle(26);
+      pgraSumBpu->SetMarkerStyle(25);
+      pgraSumBad->SetMarkerColor(lc.red());
+      pgraSumNoi->SetMarkerColor(lc.brown());
+      pgraSumBpu->SetMarkerColor(lc.blue());
       Name parTitle = parName;
-      if ( parTitle == "cs" ) parTitle = "Fit #chi_{2}";
-      if ( parTitle == "csdof" ) parTitle = "Fit #chi_{2}/DOF";
+      if ( parTitle == "cs" ) parTitle = "Fit #chi^{2}";
+      if ( parTitle == "csdof" ) parTitle = "Fit #chi^{2}/DOF";
       Name sttl = "Channel summary for " + varName + " " + parTitle;
       pgraSum->GetXaxis()->SetTitle("Channel");
       pgraSum->SetTitle(sttl.c_str());
@@ -993,7 +1018,8 @@ GraphPtr AdcCalibGraphs::channelSummaryGraph(Name varName, Name parName, Name fi
     pgraSum->SetPoint(ipt, icha, yval);
     pgraSum->SetPointError(ipt, 0.25, eval);
     if ( isBad ) pgraSumBad->SetPoint(pgraSumBad->GetN(), icha, yval);
-    if ( isNoisy ) pgraSumNoisy->SetPoint(pgraSumBad->GetN(), icha, yval);
+    if ( isNoi ) pgraSumNoi->SetPoint(pgraSumNoi->GetN(), icha, yval);
+    if ( isBpu ) pgraSumBpu->SetPoint(pgraSumBpu->GetN(), icha, yval);
     ++ipt;
   }
   if ( ! pgraSum ) {
@@ -1002,8 +1028,9 @@ GraphPtr AdcCalibGraphs::channelSummaryGraph(Name varName, Name parName, Name fi
   }
   if ( xmax > xmin ) pgraSum->GetXaxis()->SetRangeUser(xmin, xmax);
   m_chsgras[graName] = pgraSum;
-  m_chsgrasBad[graName] = pgraSumBad;
-  m_chsgrasNoisy[graName] = pgraSumNoisy;
+  m_chsgrasBad[graName]   = pgraSumBad;
+  m_chsgrasNoisy[graName] = pgraSumNoi;
+  m_chsgrasBpu[graName]   = pgraSumBpu;
   return pgraSum;
 }
     
@@ -1030,20 +1057,61 @@ channelSummaryPad(Name varName, Name parName, Name fitName0,
     cout << "Unable to find bad graph " << graName << endl;
     return ppad;
   }
-  GraphPtr pgraNoisy = m_chsgrasNoisy[graName];
-  if ( ! pgraNoisy ) {
+  GraphPtr pgraNoi = m_chsgrasNoisy[graName];
+  if ( ! pgraNoi ) {
     cout << "Unable to find noisy graph " << graName << endl;
     return ppad;
   }
-  double x0 = pgra->GetN() ? pgra->GetX()[0] : 0.0;
+  GraphPtr pgraBpu = m_chsgrasBpu[graName];
+  if ( ! pgraBpu ) {
+    cout << "Unable to find bad pulser graph " << graName << endl;
+    return ppad;
+  }
+  int npt = pgra->GetN();
+  double xmin = 0.0;
+  double xmax = 0.0;
+  if ( npt ) {
+    xmin = pgra->GetX()[0] - 0.5;
+    xmax = pgra->GetX()[npt-1] + 0.5;
+  }
   ppad.reset(new TPadManipulator(xw, yw));
-  ppad->add(pgra.get(), "P");
-  if ( pgraNoisy->GetN() ) ppad->add(pgraNoisy.get(), "P");
-  if ( pgraBad->GetN() ) ppad->add(pgraBad.get(), "P");
-  ppad->showGraphOverflow("BTLR", 41);
+  // April 2020: Make sure all overflow points are properly displayed.
+  std::vector<GraphPtr> drawGraphs;
+  drawGraphs.push_back(pgra);
+  if ( pgraBpu->GetN() ) drawGraphs.push_back(pgraBpu);
+  if ( pgraNoi->GetN() ) drawGraphs.push_back(pgraNoi);
+  if ( pgraBad->GetN() ) drawGraphs.push_back(pgraBad);
+  for ( const GraphPtr& pgp : drawGraphs ) {
+    TGraphErrors* pg = dynamic_cast<TGraphErrors*>(pgp->Clone());
+    double x, y;
+    if ( ymax > ymin ) {
+      for ( int ipt=0; ipt<pg->GetN(); ++ipt ) {
+        pg->GetPoint(ipt, x, y);
+        if ( y < ymin ) pg->SetPoint(ipt, x, ymin);
+        if ( y > ymax ) pg->SetPoint(ipt, x, ymax);
+      }
+    }
+    ppad->add(pg, "P");
+    delete pg;
+  }
+  //ppad->add(pgra.get(), "P");
+  //ppad->showGraphOverflow("BTLR", 41);
+  //if ( pgraBpu->GetN() ) ppad->add(pgraBpu.get(), "P");
+  //if ( pgraNoi->GetN() ) ppad->add(pgraNoi.get(), "P");
+  //if ( pgraBad->GetN() ) ppad->add(pgraBad.get(), "P");
   ppad->setGridY();
   ppad->addAxis();
-  ppad->addVerticalModLines(48, x0 - 0.5);
+  if ( xmax > xmin ) ppad->setRangeX(xmin, xmax);
+  Index vmod = 0;
+  if ( m_crName.substr(0, 3) == "apa" ) {
+    Name::size_type ipos = m_crName.size() - 1;
+    Name suf1 = m_crName.substr(ipos);
+    Name suf2 = m_crName.substr(ipos-1);
+    if ( suf1 == "u" || suf1 == "v" ) vmod = 40;
+    if ( suf1 == "z" || suf1 == "c" || suf1 == "x" ) vmod = 48;
+    if ( suf2 == "z1" || suf2 == "z2" ) vmod = 48;
+  }
+  ppad->addVerticalModLines(vmod, xmin);
   ppad->addHorizontalLine(0.0);
   ppad->setLabel(label(varName));
   if ( ymax > ymin ) ppad->setRangeY(ymin, ymax);
@@ -1070,8 +1138,10 @@ GraphPtr AdcCalibGraphs::channelRatioGraph(Name ratName) {
   if ( m_chsgras.find(graName) != m_chsgras.end() ) return m_chsgras[graName];
   GraphPtr pgraRat;
   GraphPtr pgraRatBad;
-  GraphPtr pgraRatNoisy;
+  GraphPtr pgraRatNoi;
+  GraphPtr pgraRatBpu;
   int npt = 0;
+  LineColors lc;
   if ( ratName == "AHS" ) {
     Name graNameArea;
     GraphPtr pgraArea = channelSummaryGraph("Area", "Slope");
@@ -1081,8 +1151,13 @@ GraphPtr AdcCalibGraphs::channelRatioGraph(Name ratName) {
     pgraRat.reset(new TGraphErrors);
     pgraRatBad.reset(new TGraphErrors);
     pgraRatBad->SetMarkerStyle(24);
-    pgraRatNoisy.reset(new TGraphErrors);
-    pgraRatNoisy->SetMarkerStyle(26);
+    pgraRatBad->SetMarkerColor(lc.red());
+    pgraRatNoi.reset(new TGraphErrors);
+    pgraRatNoi->SetMarkerStyle(26);
+    pgraRatNoi->SetMarkerColor(lc.brown());
+    pgraRatBpu.reset(new TGraphErrors);
+    pgraRatBpu->SetMarkerStyle(25);
+    pgraRatBpu->SetMarkerColor(lc.blue());
     for ( int ipt=0; ipt<npt; ++ipt ) {
       double xa = pgraArea->GetX()[ipt];
       double xh = pgraHeig->GetX()[ipt];
@@ -1117,8 +1192,21 @@ GraphPtr AdcCalibGraphs::channelRatioGraph(Name ratName) {
       }
       pgraRat->SetPoint(ipt, xa, rat);
       pgraRat->SetPointError(ipt, 0.25, drat);
-      if ( m_pChannelStatusProvider->IsBad(icha) ) pgraRatBad->SetPoint(pgraRatBad->GetN(), xa, rat);
-      if ( m_pChannelStatusProvider->IsNoisy(icha) ) pgraRatNoisy->SetPoint(pgraRatNoisy->GetN(), xa, rat);
+      bool isBad   = false;
+      bool isNoi = false;
+      bool isBpu   = false;
+#if HAVE_CHANNEL_STATUS_SERVICE
+      isBad = m_pChannelStatusProvider->IsBad(icha);
+      isNoi = m_pChannelStatusProvider->IsNoisy(icha);
+#else
+      Index chstat = m_pchanstat->get(icha);
+      isBad = chstat == 1;
+      isNoi = chstat == 2;
+      isBpu = chstat == 3;
+#endif
+      if ( isBad ) pgraRatBad->SetPoint(pgraRatBad->GetN(), xa, rat);
+      if ( isNoi ) pgraRatNoi->SetPoint(pgraRatNoi->GetN(), xa, rat);
+      if ( isBpu ) pgraRatBpu->SetPoint(pgraRatBpu->GetN(), xa, rat);
     }
   } else {
     cout << myname << "Invalid ratio :" << ratName << endl;
@@ -1130,8 +1218,9 @@ GraphPtr AdcCalibGraphs::channelRatioGraph(Name ratName) {
     pgraRat->GetXaxis()->SetRangeUser(xmin, xmax);
   }
   m_chsgras[graName] = pgraRat;
-  m_chsgrasBad[graName] = pgraRatBad;
-  m_chsgrasNoisy[graName] = pgraRatNoisy;
+  m_chsgrasBad[graName]   = pgraRatBad;
+  m_chsgrasNoisy[graName] = pgraRatNoi;
+  m_chsgrasBpu[graName]   = pgraRatBpu;
   return pgraRat;
 }
 

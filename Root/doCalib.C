@@ -1,6 +1,7 @@
 AdcCalibGraphs* doCalib(string dstName, string crName,
              int dacmin =1, int dacmax =7,
-             float varyOffset =0.0, float varyPedestal =0.0, float varyPedOff =0.0,
+             float varyOffset =0.0, float varyPedestal =0.0,
+             float varyShift =0.0, float varyNegScale =0.0,
              bool doShaping =true, bool doAreaGain =true, bool doHeightGain =true) {
   string myname = "doCalib: ";
   bool usePulser = false;
@@ -8,7 +9,7 @@ AdcCalibGraphs* doCalib(string dstName, string crName,
   float xfmin = dacmin - 0.5;
   float xfmax = dacmax + 0.5;
   AdcCalibGraphs* pcg = calib(dstName, crName, usePulser, xfmin, xfmax, showExtraDst,
-                              varyOffset, varyPedestal, varyPedOff);
+                              varyOffset, varyPedestal, varyShift, varyNegScale);
   if ( pcg == nullptr ) return pcg;
   AdcCalibGraphs& cg = *pcg;
   cout << myname << "Printing" << endl;
@@ -33,10 +34,15 @@ AdcCalibGraphs* doCalib(string dstName, string crName,
     cout << "Writing height gain calibration " << fclfile << endl;
     cg.writeFcl("HeightGain", fclfile.c_str());
   }
-  string chsumName = "chsum_area_slope_" + crName + ".{png,tpad}";
-  cg.drawChannelSummaryPad("Area", "Slope", "", 0, 1000)->print(chsumName);
+  string chsumName;
+  chsumName = "chsum_area_slope_" + crName + ".{png,tpad}";
+  cg.drawChannelSummaryPad("Area", "Slope", "", 0, 1200)->print(chsumName);
   chsumName = "chsum_area_csdof_" + crName + ".{png,tpad}";
-  cg.drawChannelSummaryPad("Area", "csdof", "", 0, 1000)->print(chsumName);
+  cg.drawChannelSummaryPad("Area", "csdof", "", 0, 1500)->print(chsumName);
+  chsumName = "chsum_height_slope_" + crName + ".{png,tpad}";
+  cg.drawChannelSummaryPad("Height", "Slope", "", 0, 215)->print(chsumName);
+  chsumName = "chsum_shaping_mean_" + crName + ".{png,tpad}";
+  cg.drawChannelSummaryPad("Shaping", "Pedestal", "shapingFitPlus", 4.0, 4.8)->print(chsumName);
   return pcg;
 }
 
