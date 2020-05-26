@@ -36,9 +36,9 @@ AdcCalibData ib3_b900 apaz1
 If the last argument is true, the script checks for the existence of each file and excludes
 those that are missing.
 
-### Evaluation of response means
+### Evaluation of channel summary data
 
-The first step in calibration is evaluation of the response means, i.e. the mean value
+The first step in calibration is evaluation of the channey summary data, i.e. the mean value
 of pulse area, height and shaping time for each run and charge sign.
 Histograms with these means as function of channel number can be created with this command
 <pre>
@@ -51,6 +51,10 @@ The histograms are recorded in the file roicha.root in the run directory.
 
 These histogram files are then copied to the location specified in the dataset definition,
 i.e. to data/${SAM}/${CRN}/roicha${RUN}${SGN}.root where SAM is the dataset name (e.g. ib3_b900).
-The sample name can be the dataset name or has the format ${DST}-XXX where DST is the dataset
-name and XXX allows for differnt processing or fitting options.
+The sample name can be the dataset name or can be in the format ${DST}-XXX where DST is the dataset
+name and XXX allows for differnt processing options, e.g. different ROI thresholds or
+window sizes.
 
+### Area gains
+
+More to come..e
