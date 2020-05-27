@@ -129,8 +129,9 @@ public:
   // Otherwise the graph for extra dataset dstName.
   GraphPtr graph(Name gnam, Index icha, Name dstName ="");
 
-  // Print all the multichannel pads.
-  int printMultiChannelPads() const;
+  // Print all the multichannel pads whose names begin with prefix, e.g. "Area".
+  // prepending outpre to the output file names.
+  int printMultiChannelPads(Name prefix ="", Name outpre ="") const;
 
   // Create a channel summary plot.
   // E.g. slope vs. channel.

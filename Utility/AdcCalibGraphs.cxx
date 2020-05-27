@@ -894,12 +894,14 @@ void AdcCalibGraphs::makeMultiChannelPads(Name gnam, Index npadx, Index npady, I
 
 //**********************************************************************
 
-int AdcCalibGraphs::printMultiChannelPads() const {
+int AdcCalibGraphs::printMultiChannelPads(Name prefix, Name outpre) const {
   Name myname = "AdcCalibGraphs::printMultiChannelPads: ";
   for ( PadNameMap::value_type ipad : m_multiPads ) {
     Name pnam = ipad.first;
     PadPtr ppad = ipad.second;
-    Name fnam = pnam + ".png";
+    Name::size_type prelen = prefix.size();
+    if ( prelen && pnam.substr(0, prelen) != prefix ) continue;
+    Name fnam = outpre + pnam + ".png";
     cout << myname << "Printing " << fnam << endl;
     ppad->print(fnam);
   }

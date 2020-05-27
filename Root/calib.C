@@ -9,6 +9,8 @@
 
 //   varyOffset: 0 ==> fix at 0.0, otherwise use as starting value
 //   varyPedestal: 0 ==> fix at 0.0, otherwise use as starting value
+//   varyShift: 0 ==> fix at 0.0, otherwise use as starting value
+//   varyNegScale: 0 ==> fix at 0.0, otherwise use as starting value
 AdcCalibGraphs*
 calib(string dstName ="", string crName ="", bool usePulser =false,
       double xfminIn =-101, double xfmaxIn =0.0,
