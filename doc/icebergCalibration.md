@@ -55,6 +55,13 @@ The sample name can be the dataset name or can be in the format ${DST}-XXX where
 name and XXX allows for differnt processing options, e.g. different ROI thresholds or
 window sizes.
 
-### Area gains
+### Calibration
 
-More to come..e
+The calibrations, i.e. area gain, height gain and shaping time for each channel are evaluated
+from the channel summary data using
+the rather complicated utility class [AdcCalibGraphs](../Utility/AdcCalibGraphs.h).
+The Root script [doCalib](../Root/doCalib.C) provides a wrapper to use this utility to generate
+the fcl calibration files and many associated plots.
+The Iceberg-specific Root script [icebergCalib](../Root/Iceberg/icebergCalib.C)
+assigns names to standard fitting options and passes
+those to doCalib to carry out calibrations.
