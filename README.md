@@ -9,5 +9,7 @@ of the protoDUNE TPC.
 
 The calibration procedure is described in [doc/procedure.md](doc/procedure.md).
 
+Details for Iceberg are given in [doc/icebergCalibration.md](doc/icebergCalibration.md).
+
 ### Some useful links.
 * [DA's run list] (https://wiki.dunescience.org/wiki/ProtoDUNE_commissioning_runs_(dla))
