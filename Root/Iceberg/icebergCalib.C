@@ -1,3 +1,19 @@
+// icbergCalib.C
+//
+// David Adams
+// May 2020
+//
+// Root script to generate calibration fcl files and
+// related plots for Iceberg.
+//
+// Arguments:
+//      dst - Dataset name.
+//   fitopt - fitting option
+//      crn - Channel range, e.g. apau, apav, apaz1 or apaz2
+//
+// Input channel summary files are taken from data/dst/crn
+// Output is written to calibrations/dst-fitopt
+
 int icebergCalib(string dst, string fitopt, string crn) {
   string myname = "icebergCalib: ";
   if ( fitopt == "v1" ) {

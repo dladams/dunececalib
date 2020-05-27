@@ -44,12 +44,20 @@ TPadManipulator* calplots(string calname,
     int nbad = 0;
     int ngoo = 0;
     for ( Index icha=0; icha<ncha; ++icha ) {
-      float gain = pcal->value(icha);
-      if ( gain < gmin ) gain = gmin + 0.00001;
-      if ( gain > gmax ) gain = gmax - 0.00001;
-      phgAll->Fill(gain);
       int chs = pchs->get(icha);
       bool isBad = chs == 1 || chs == 3;
+      float gain = pcal->value(icha);
+      bool isLo = gain < gmin;
+      bool isHi = gain > gmax;
+      if ( isLo ) {
+        if ( ! isBad ) cout << myname << "Lo gain: " << icha << ": " << gain << endl;
+        gain = gmin + 0.00001;
+      }
+      if ( isHi ) {
+        if ( ! isBad ) cout << myname << "Hi gain: " << icha << ": " << gain << endl;
+        gain = gmax - 0.00001;
+      }
+      phgAll->Fill(gain);
       if ( isBad ) ++nbad;
       else ++ngoo;
       if ( isBad ) phgBad->Fill(gain);

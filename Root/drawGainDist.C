@@ -8,7 +8,7 @@
 void drawGainDist(string scal ="") {
   if ( scal.size() == 0 ) {
     cout << "Usage: root> drawGainDist(CAL)" << endl;
-    cout << "  e.g. CAL = \"calib201912_nov19extv4\"" << endl;
+    cout << "  e.g. CAL = \"calib20191203\"" << endl;
     return;
   }
   string slab = "areaGain_" + scal;
