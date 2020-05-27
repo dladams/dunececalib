@@ -6,7 +6,7 @@ May 2020
 ### Introduction
 
 This documents summarizes the charge calibration procedure for Iceberg run 3.
-The general goals and procedures for calibration are [procedure.md](here).
+The general goals and procedures for calibration are [here](procedure.md).
 The Iceberg datasets and some calibration results are posted on the
 [Iceberg calibration page](https://internal.dunescience.org/people/dladams/protodune/iceberg/calibrations).
 
@@ -62,6 +62,6 @@ from the channel summary data using
 the rather complicated utility class [AdcCalibGraphs](../Utility/AdcCalibGraphs.h).
 The Root script [doCalib](../Root/doCalib.C) provides a wrapper to use this utility to generate
 the fcl calibration files and many associated plots.
-The Iceberg-specific Root script [icebergCalib](../Root/Iceberg/icebergCalib.C)
+The Iceberg-specific Root script [icebergCalib.C](../Root/Iceberg/icebergCalib.C)
 assigns names to standard fitting options and passes
 those to doCalib to carry out calibrations.
