@@ -63,8 +63,8 @@ tools.adcRoiFitter.SumHists: [
 ]
 
 tools.adcRoiFitter.ChanSumHists: [
-  {name:"hcsCount_%CRNAME%"        title:"ROI %LAB0% count %RUN% %CRLABEL%"                           valHist:"hsa_ch%0CHAN%"     valType:count       errType:none     nbins:0 plot:"%HNAME%.png" pran:"0:1000" cr:list},
-  {name:"hcsFitCount_%CRNAME%"     title:"ROI %LAB0% count %RUN% %CRLABEL%"                           valHist:"hfh_ch%0CHAN%"     valType:count       errType:none     nbins:0 plot:"%HNAME%.png" pran:"0:1000" cr:list},
+  {name:"hcsCount_%CRNAME%"        title:"ROI %LAB0% count %RUN% %CRLABEL%"                           valHist:"hsa_ch%0CHAN%"     valType:count       errType:none     nbins:0 plot:"%HNAME%.png" pran:"0:1400" cr:list},
+  {name:"hcsFitCount_%CRNAME%"     title:"ROI %LAB0% count %RUN% %CRLABEL%"                           valHist:"hfh_ch%0CHAN%"     valType:count       errType:none     nbins:0 plot:"%HNAME%.png" pran:"0:1400" cr:list},
   {name:"hcsArea_%CRNAME%"         title:"ROI %LAB0% area run %RUN% %CRLABEL%"                        valHist:"hsa_ch%0CHAN%"     valType:fitMean     errType:fitSigma nbins:0 plot:"%HNAME%.png" pran:"0:1800:pampg14" cr:list},
   {name:"hcsAreaSigma_%CRNAME%"    title:"ROI %LAB0% area sigma run %RUN% %CRLABEL%"                  valHist:"hsa_ch%0CHAN%"     valType:fitSigma    errType:none     nbins:0 plot:"%HNAME%.png" pran:"0:100"  cr:list},
   {name:"hcsHeight_%CRNAME%"       title:"ROI %LAB0% fit height run %RUN% %CRLABEL%"                  valHist:"hfh_ch%0CHAN%"     valType:fitMean     errType:fitSigma nbins:0 plot:"%HNAME%.png" pran:"0:300:pampg14" cr:list},
