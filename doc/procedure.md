@@ -18,7 +18,7 @@ external (FEMB based) signal generation.
 Thus, gains can be derived from data taken with a single DAC setting but more are
 typically used to average over non-linearity in the pulser response.
 The standard is DAC settings 1-7 because these do not show saturation
-for amplifier gain 14 mV/fC and there is a jump in the puilser reponse after these.
+for amplifier gain 14 mV/fC and there is a jump in the pulser reponse after these.
 
 The following sections provide step-by-step instructions for generating a calibration
 with a combination of dunetpc lar and Root jobs making use of the scripts and configuration
