@@ -4,9 +4,6 @@ Dune TPC cold electronics gain calibration
 This package holds configuration files and Root scripts used in charge calibration
 of the protoDUNE TPC.
 
-This package holds configuration files and Root scripts used in charge calibration
-of the protoDUNE TPC.
-
 The calibration procedure is described in [doc/procedure.md](doc/procedure.md).
 
 Details for Iceberg are given in [doc/icebergCalibration.md](doc/icebergCalibration.md).
