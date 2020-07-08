@@ -11,6 +11,10 @@ services.RawDigitPrepService.AdcChannelToolNames: [
   "adcRoiFitter"
 ]
 
+# Use narrow ROIs. This is v4 and v07 calibration.
+tools.adcThresholdSignalFinder.BinsBefore: 5
+tools.adcThresholdSignalFinder.BinsAfter: 8
+
 # ROI threshold before decon.
 # Use duneproc roifitpos or roifitneg to change these.
 tools.adcThresholdSignalFinder.Threshold: 100

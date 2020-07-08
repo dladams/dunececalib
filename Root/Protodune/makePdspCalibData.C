@@ -153,7 +153,6 @@ const AdcCalibData* makeAdcCalibData(string dstName, string crNameIn, bool check
   } else if ( dstName == "nov19ext"   ||
               dstName == "nov19extv4" ) {
     crNameDefault = "apa7z";
-    skipMissingFiles = true;
     runMap[ 1] = {10489};
     runMap[ 2] = {10491};
     runMap[ 3] = {10492};
@@ -175,6 +174,29 @@ const AdcCalibData* makeAdcCalibData(string dstName, string crNameIn, bool check
     runMap[21] = {10509};
     //runMap[25] = {10510};
     //runMap[30] = {10511};
+  } else if ( dstName.substr(0,8) == "jul20ext" ) {
+    skipMissingFiles = true;
+    runMap[ 1] = {11526};
+    runMap[ 2] = {11527};
+    runMap[ 3] = {11528};
+    runMap[ 4] = {11529};
+    runMap[ 5] = {11530};
+    runMap[ 6] = {11531};
+    runMap[ 7] = {11532};
+    runMap[ 8] = {11533};
+    runMap[ 9] = {11534};
+    runMap[10] = {11535};
+    runMap[11] = {11536};
+    runMap[12] = {11537};
+    runMap[13] = {11538};
+    runMap[14] = {11539};
+    runMap[15] = {11540};
+    runMap[16] = {11541};
+    runMap[17] = {11542};
+    runMap[18] = {11543};
+    runMap[21] = {11544};
+    runMap[25] = {11545};
+    runMap[30] = {11546};
   } else {
     cout << myname << "Dataset not found: " << dstName << endl;
     return pcad;

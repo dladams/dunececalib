@@ -10,3 +10,4 @@ install(
 )
 
 add_subdirectory("Iceberg")
+add_subdirectory("Protodune")

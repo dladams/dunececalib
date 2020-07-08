@@ -3,6 +3,7 @@
 # Install shell scripts.
 install(PROGRAMS
   dunececalibHelp
+  doCalibPdsp
 DESTINATION bin)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 

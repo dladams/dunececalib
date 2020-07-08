@@ -144,6 +144,11 @@ public:
                            double ymin =0.0, double ymax=0.0, Index wx=1400, Index wy=500);
   PadPtr drawChannelSummaryPad(Name varName, Name parName, Name fitName ="",
                                double ymin =0.0, double ymax=0.0, Index wx=1400, Index wy=500);
+  // Add alternate interface because of incomplete support for intepreted shared_ptr in Root 6.18/04.
+  Pad* drawChannelSummaryPadBare(Name varName, Name parName, Name fitName ="",
+                               double ymin =0.0, double ymax=0.0, Index wx=1400, Index wy=500) {
+    return drawChannelSummaryPad(varName, parName, fitName, ymin, ymax, wx, wy).get();
+  }
 
   // Return graph with ratio of summary values.
   //   ratName: AHS - Area/Height/Shaping
