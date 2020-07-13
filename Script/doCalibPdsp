@@ -1,0 +1,61 @@
+#!/bin/sh
+
+# doCalibPdsp
+#
+# David Adams
+# July 2020
+#
+# Top-level script to calibrate a channel ranges for protoDUNE-SP.
+
+DST=$1
+CR=$2
+if [ -z "$CR" ]; then
+  echo Usage: $0 DST CR
+  echo "  DST = dec19extv4, nov19extv4, jul20extv07, ..."
+  echo "  CR = apa1z, ..., apa6v, all"
+  exit 0
+fi
+
+if [ $CR = z -o $CR = c -o $CR = u -o $CR = v ]; then
+  for IAPA in 1 2 3 4 5 6; do
+    echo
+    echo "===================================================================="
+    echo
+    $0 $CAL apa${IAPA}$CR
+  done
+  exit 0
+fi
+
+if [ ${#CR} -eq 4 -a ${CR:0:3} = apa ]; then
+  for VIEW in u v c z; do
+    echo
+    echo "===================================================================="
+    echo
+    $0 $CAL ${CR}}$VIEW
+  done
+  exit 0
+fi
+
+if [ $CR = all ]; then
+  for IAPA in 1 2 3 4 5 6; do
+    for VIEW in u v c z; do
+      echo
+      echo "===================================================================="
+      echo
+      $0 $CAL apa${IAPA}$VIEW
+    done
+  done
+  exit 0
+fi
+
+CALDIR=calibrations/$DST/$CR
+if [ -r $CALDIR ]; then
+  echo Calibration directory is already present. Remove with
+  echo "  rm -rf $CALDIR"
+  exit 1
+fi
+
+root.exe -b -q '$DUNECECALIB_DIR/root/doCalib.C("'$DST'", "", "'$CR'")'
+
+#./wsave $DST $CR
+#rm -f *.png areaGain*.fcl shapingTime*.fcl

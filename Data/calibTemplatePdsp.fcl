@@ -1,0 +1,75 @@
+# CALIB.fcl
+#
+# David Adams
+# December 2019
+
+#####################################################################
+
+# Charge calibration.
+tools.areaGain_CALIB: {
+  tool_type: FclFileFloatArray
+  LogLevel: 1
+  Label: "areaGain_CALIB"
+  DefaultValue: 0.0
+  FileNames: [
+    "calibs/CALIB/areaGain_apa3z.fcl",
+    "calibs/CALIB/areaGain_apa3c.fcl",
+    "calibs/CALIB/areaGain_apa3u.fcl",
+    "calibs/CALIB/areaGain_apa3v.fcl",
+    "calibs/CALIB/areaGain_apa5z.fcl",
+    "calibs/CALIB/areaGain_apa5c.fcl",
+    "calibs/CALIB/areaGain_apa5u.fcl",
+    "calibs/CALIB/areaGain_apa5v.fcl",
+    "calibs/CALIB/areaGain_apa2z.fcl",
+    "calibs/CALIB/areaGain_apa2c.fcl",
+    "calibs/CALIB/areaGain_apa2u.fcl",
+    "calibs/CALIB/areaGain_apa2v.fcl",
+    "calibs/CALIB/areaGain_apa6z.fcl",
+    "calibs/CALIB/areaGain_apa6c.fcl",
+    "calibs/CALIB/areaGain_apa6u.fcl",
+    "calibs/CALIB/areaGain_apa6v.fcl",
+    "calibs/CALIB/areaGain_apa1z.fcl",
+    "calibs/CALIB/areaGain_apa1c.fcl",
+    "calibs/CALIB/areaGain_apa1u.fcl",
+    "calibs/CALIB/areaGain_apa1v.fcl",
+    "calibs/CALIB/areaGain_apa4z.fcl",
+    "calibs/CALIB/areaGain_apa4c.fcl",
+    "calibs/CALIB/areaGain_apa4u.fcl",
+    "calibs/CALIB/areaGain_apa4v.fcl"
+  ]
+}
+
+# Shaping time calibration.
+tools.shapingTime_CALIB: {
+  tool_type: FclFileFloatArray
+  LogLevel: 1
+  Label: "shapingTime_CALIB"
+  DefaultValue: 0.0
+  FileNames: [
+    "calibs/CALIB/shapingTime_apa3z.fcl",
+    "calibs/CALIB/shapingTime_apa3c.fcl",
+    "calibs/CALIB/shapingTime_apa3u.fcl",
+    "calibs/CALIB/shapingTime_apa3v.fcl",
+    "calibs/CALIB/shapingTime_apa5z.fcl",
+    "calibs/CALIB/shapingTime_apa5c.fcl",
+    "calibs/CALIBCALIBcl",
+    "calibs/CALIB/shapingTime_apa5v.fcl",
+    "calibs/CALIB/shapingTime_apa2z.fcl",
+    "calibs/CALIB/shapingTime_apa2c.fcl",
+    "calibs/CALIB/shapingTime_apa2u.fcl",
+    "calibs/CALIB/shapingTime_apa2v.fcl",
+    "calibs/CALIB/shapingTime_apa6z.fcl",
+    "calibs/CALIB/shapingTime_apa6c.fcl",
+    "calibs/CALIB/shapingTime_apa6u.fcl",
+    "calibs/CALIB/shapingTime_apa6v.fcl",
+    "calibs/CALIB/shapingTime_apa1z.fcl",
+    "calibs/CALIB/shapingTime_apa1c.fcl",
+    "calibs/CALIB/shapingTime_apa1u.fcl",
+    "calibs/CALIB/shapingTime_apa1v.fcl",
+    "calibs/CALIB/shapingTime_apa4z.fcl",
+    "calibs/CALIB/shapingTime_apa4c.fcl",
+    "calibs/CALIB/shapingTime_apa4u.fcl",
+    "calibs/CALIB/shapingTime_apa4v.fcl"
+  ]
+}
+

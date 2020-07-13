@@ -4,6 +4,7 @@
 install(PROGRAMS
   dunececalibHelp
   doCalibPdsp
+  makeCalibPdsp
 DESTINATION bin)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 

@@ -1253,8 +1253,9 @@ Name AdcCalibGraphs::label(Name graName) const {
 int AdcCalibGraphs::writeFcl(Name calName, Name filNameIn) {
   Name myname = "AdcCalibGraphs::writeFcl: ";
   Name gainUnit = chargeUnit() + "/(ADC-count)/tick";
-  //const double qstepFC = 0.01875 * 183.0;
-  const double qstepFC = 3.448;   // Nominal resistors
+  // qstep is based on DAC setting 7 and Cinj = 187.8
+  //const double qstepFC = 3.448;   // Old setting for Cinj = 183
+  const double qstepFC = 3.539;   // Cinj = 187.8
   const double qstepE = 6241.509*qstepFC;
   double gainFac = 0.0;
   if ( chargeUnit() == "Q_{step}" ) gainFac = 1.0;
