@@ -1,0 +1,224 @@
+#!/bin/bash
+
+DST=$1
+CRN=$2
+ACT=$3
+
+if [ -z "$ACT" ]; then
+  echo Usage: $0 dstName crName ACT
+  echo "  ACT = lsrc - List roicha files in the run dirs."
+  echo "        ldst - List roicha files in the destination dirs."
+  echo "        lsav - List roicha files in the backup dirs."
+  echo "        show - Show the files to be copied to destination."
+  echo "        copy - Copy files from run to destination."
+  exit 0
+fi
+
+# dec18ext had ROI fence (-10, 20) but with bug making it cloesr to (10, 10)
+# v2 is reco done here: ROI fence (-10, 20) without bug and SC removed in pedestal finder
+# v3 is same but keeps SC in the pedestal finder (as in feb calib)
+# v4 uses the tight ROI fence (-5, 8) and removes SC in pedestal finder
+# v5 uses the tight RF, removes SC in PF and does SC mitigation
+# v06 is July 2020 processing with dunececalib and wide fence
+# v07 is July 2020 processing with dunececalib and tight fence
+
+# Location of data for channel range CRN and sign sgn = {pos, neg} is
+# $DPO/$PRESGNDIRS[sgn]/dpcr_$CRN/POSTSGNDIRS[sgn]
+declare -A SGNDIRS
+SGNDIRS[pos]=
+SGNDIRS[neg]=roineg
+SIGNFIRST=true
+DPO=roifit
+if [ $DST = nov19ext ]; then
+  SRCRUNPAT='run010[4,5]??'
+elif [ $DST = dec18extv2 ]; then
+  SRCRUNPAT='run0060??'
+elif [ $DST = dec18extv4 ]; then
+  SRCRUNPAT='run0060??'
+  DPO=roifitTight
+elif [ $DST = dec18extv5 ]; then
+  SRCRUNPAT='run0060??'
+  DPO=roifitMitTight
+elif [ $DST = apr19extv2 ]; then
+  SRCRUNPAT='run0076??'
+elif [ $DST = apr19extv4 ]; then
+  SRCRUNPAT='run0076??'
+  DPO=roifitTight
+elif [ $DST = dec18extv3 ]; then
+  SRCRUNPAT='run0060??'
+  DPO=roifitOld
+elif [ $DST = apr19extv3 ]; then
+  SRCRUNPAT='run0076??'
+  DPO=roifitOld
+elif [ $DST = nov19extv4 ]; then
+  SRCRUNPAT='run010[4,5]??'
+  DPO=roifitTight
+elif [ $DST = jul20extv06 ]; then
+  SRCRUNPAT='np04_run0115[2-4]?_'
+  DPO=pdspRunCalib-v06
+  SGNDIRS[pos]=roipos???
+  SGNDIRS[neg]=roineg???
+  SIGNFIRST=false
+elif [ $DST = jul20extv07 ]; then
+  SRCRUNPAT='np04_run0115[2-4]?_'
+  DPO=pdspRunCalib
+  SGNDIRS[pos]=roipos???
+  SGNDIRS[neg]=roineg???
+  SIGNFIRST=false
+elif [ $DST = dec18extv07 ]; then
+  SRCRUNPAT='np04_run0060[3-6]?_'
+  DPO=pdspRunCalib
+  SGNDIRS[pos]=roipos???
+  SGNDIRS[neg]=roineg???
+  SIGNFIRST=false
+else
+  echo Invalid dataset: $DST
+  exit 1
+fi
+
+HAVESIGNS=1
+RUNDIR=./$DPO
+SAVDIR=$HOME/data/dune/save/calib_$DST/$DPO
+
+SAVFIL=$SAVDIR/roicr$CRN.tarz
+HSTDIR=data/$DST/$CRN
+
+# If action is lsav, list the save files.
+if [ $ACT = lsav ]; then
+  if [ -r $SAVFIL ]; then
+    TARFILS=`tar -tzf $SAVFIL | grep roicha.root | sort`
+    for SIGN in pos neg; do
+      COUNT=0
+      for SGNFIL in `echo $TARFILS | grep $SIGN`; do
+        if echo $SGNFIL | grep $SIGN 2>&1 1>/dev/null; then
+          echo $SGNFIL
+          COUNT=$((COUNT + 1))
+        fi
+      done
+      echo "+++++ Count $SIGN: $COUNT"
+    done
+  else
+    echo Save file not found: $SAVFIL
+  fi
+  exit 0
+fi
+
+if [ -z "$HAVESIGNS" ]; then
+  SGNS=pos
+  CRNDIRs=$RUNDIR/dpcr_$CRN
+else
+  SGNS="pos neg"
+  CRNDIRs="$RUNDIR/dpcr_$CRN $RUNDIR/roineg/dpcr_$CRN"
+fi
+
+# If action is ldst, list the local histogram files.
+if [ $ACT = ldst ]; then
+  if [ -r $HSTDIR ]; then
+    for SIGN in $SGNS; do
+      COUNT=0
+      for SGNFIL in `ls $HSTDIR/roi*${SIGN}*`; do
+        echo $SGNFIL
+        COUNT=$((COUNT + 1))
+      done
+      echo "+++++ Count $SIGN: $COUNT"
+    done
+  else
+    echo Directory not found: $HSTDIR
+  fi
+  exit 0
+fi
+
+CRNDIR=$RUNDIR/dpcr_$CRN
+if [ ! -d $CRNDIR ]; then
+  echo Run CR directory not found: $CRNDIR
+  exit 1
+fi
+
+# If action is save, move run files to save directory.
+if [ $ACT = save ]; then
+  if [ ! -d $SAVDIR ]; then
+    echo Save directory not found: $SAVDIR
+    exit 4
+  fi
+  echo Copying $CRNDIR to $SAVFIL
+  cd $RUNDIR
+  ROIDIR=roicr$CRN
+  if tar -czf $SAVFIL $ROIDIR; then
+    echo Removing run directory $CRNDIR
+    rm -rf $ROIDIR
+  else
+    echo Save failed
+    exit 5
+  fi
+  exit 0
+fi
+
+# lsrc and copy require that the source be present
+if [ ! -d $CRNDIR ]; then
+  echo CR directory not found: $CRNDIR
+  exit 2
+fi
+EVRAN="evts000000-000100"
+for SGN in $SGNS; do
+  COUNT=0
+  COUNTGOOD=0
+  if [ $SIGNFIRST = true ]; then
+    SGNDIR="$DPO/${SGNDIRS[$SGN]}/dpcr_$CRN"
+  else
+    SGNDIR="$DPO/dpcr_$CRN/${SGNDIRS[$SGN]}"
+  fi
+  NSGNDIR=0
+  for TMPDIR in $SGNDIR; do
+    NSGNDIR=$((NSGNDIR+1))
+  done
+  if [ $NSGNDIR = 0 ]; then
+    echo ROI sign directory not found: $SGNDIR
+    continue
+  fi
+  echo Source directory for $SGN: $SGNDIR
+  #for FILE in `find $SGNDIR -name roicha.root | sort`; do
+  for SRCDIR in $SGNDIR/${SRCRUNPAT}$EVRAN; do
+    #echo "----"
+    SRUN=`basename $SRCDIR | sed 's/.*run/run/g' | sed 's/_evts.*//g'`
+    SCHA=`echo $SRUN | sed 's/run/roicha/g'`
+    FILE=$SRCDIR/roicha.root
+    DEST=$HSTDIR/${SCHA}$SGN.root
+    RUNFILE=$RUNDIR/`echo $SRCDIR | sed "s#.*$DPO##g"`/roicha.root
+    LOGFILE=$RUNDIR/`echo $SRCDIR | sed "s#.*$DPO##g"`/run.log
+    SAVFILE=$SAVDIR/`echo $SRCDIR | sed "s#.*$DPO##g"`/roicha.root
+    EVCOUNT=
+    if [ -r $LOGFILE ]; then
+      EVCOUNT=`grep "Event count:" $LOGFILE | sed 's#.*Event count: ##g'`
+    fi
+    DDIR=`dirname $DEST`
+    if [ $ACT = show ]; then
+      echo $FILE $DEST $EVCOUNT
+    elif [ $ACT = copy ]; then
+      if [ ! -d $DDIR ]; then
+        mkdir $DDIR
+      fi
+      if [ -r $DEST ]; then
+        echo Skipping $DEST
+      elif [ ! -r $FILE ]; then
+        echo Source not found: $FILE
+      else
+        echo Copying $FILE to $DEST
+        cp $FILE $DEST
+      fi
+    elif [ $ACT = count ]; then
+      SKIP=true;
+    elif [ $ACT = lsrc ]; then
+      if [ -r $RUNFILE ]; then
+        echo `ls -ls $RUNFILE` '('$EVCOUNT')'
+      else
+        echo Run file not found: $RUNFILE
+      fi
+    else
+      echo Invalid action: $ACT
+      exit 1
+    fi
+    COUNT=$((COUNT + 1))
+    if [ -r $DEST ]; then COUNTGOOD=$((COUNTGOOD + 1)); fi
+  done
+  echo "+++++ Count $SGN: $COUNTGOOD/$COUNT"
+done

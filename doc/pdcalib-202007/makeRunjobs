@@ -1,0 +1,61 @@
+#!/bin/sh
+
+# makeRunjobs
+#
+# David Adams
+# July 2020
+#
+# Create runjobs instructions to create calibration input for plane
+# APAP using runs RUN1 or runs RUN1-RUN2.
+
+getthresh() {
+  RUN=$1
+  if   [ $RUN -ge 11526 -a $RUN -le 11540 ]; then echo 100
+  elif [ $RUN -ge 11541 -a $RUN -le 11546 ]; then echo 600
+  elif [ $RUN -ge 6040 -a $RUN -le 6043 ]; then echo 100
+  elif [ $RUN -ge 6045 -a $RUN -le 6046 ]; then echo 100
+  elif [ $RUN -eq 6068                  ]; then echo 100
+  else
+    #echo Invalid run: $RUN >&2
+    echo 0
+  fi
+}
+
+APAP=$1
+RUN1=$2
+RUN2=$3
+SUBMIT=$4
+
+if [ -z "$RUN2" ]; then RUN2=$RUN1; fi
+
+if [ -z "$RUN1" ]; then
+  echo "Usage: $0 CRN RUN1 [RUN2] [SUBMIT]"
+  echo "  CRN = apa1z, ..."
+  echo "  Run RUN1 or runs RUN1-RUN2"
+  echo "  If SUBMIT, apend to runjobs.txt"
+  exit 0
+fi
+
+if [ -n "$SUBMIT" ]; then
+  wc -l runjobs.txt
+  $0 $APAP $RUN1 $RUN2 >> runjobs.txt
+  wc -l runjobs.txt
+  exit 0
+fi
+
+RUN=$RUN1
+echo
+while [ $RUN -le $RUN2 ]; do
+  THR=$(getthresh $RUN)
+  if [ ! $THR -gt 0 ]; then
+    echo Skipping unknown run $RUN >&2
+  else
+    SRUN=$RUN
+    while [ ${#SRUN} -lt 6 ]; do SRUN=0$SRUN; done
+    echo Adding jobs for $RUN $APAP >&2
+    for SGN in pos neg; do
+      echo duneproc pdspRunCalib/dpcr_$APAP/roi${SGN}${THR} np04_run${SRUN}_evts000000-000100
+    done
+  fi
+  RUN=$(($RUN+1))
+done
