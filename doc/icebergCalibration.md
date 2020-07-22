@@ -38,7 +38,7 @@ those that are missing.
 
 ### Evaluation of channel summary data
 
-The first step in calibration is evaluation of the channey summary data, i.e. the mean value
+The first step in calibration is evaluation of the channel summary data, i.e. the mean value
 of pulse area, height and shaping time for each run and charge sign.
 Histograms with these means as function of channel number can be created with this command
 <pre>
