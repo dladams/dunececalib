@@ -6,7 +6,7 @@ of the protoDUNE TPC.
 
 The calibration procedure is described in [doc/procedure.md](doc/procedure.md).
 
-Details for protoDUNE-SP are in [doc/pdspCalibration.md].
+Details for protoDUNE-SP are in [doc/pdspCalibration.md](doc/pdspCalibration.md).
 
 Details for Iceberg are in [doc/icebergCalibration.md](doc/icebergCalibration.md).
 
