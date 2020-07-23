@@ -7,7 +7,7 @@ July 2020
 
 This documents summarizes the charge calibration procedure for protoDUNE run 1.
 The general goals and procedures for calibration are [here](procedure.md).
-The Iceberg datasets and some calibration results are posted on the
+The protoDUNE datasets and some calibration results are posted on the
 [ProtoDUNE calibration page](https://internal.dunescience.org/people/dladams/protodune/calibrations).
 
 ### Datasets
