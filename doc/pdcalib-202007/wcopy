@@ -1,0 +1,25 @@
+#!/bin/sh
+
+DST=$1
+TOPDIR=~/wwwdune/protodune/calibrations
+SRCDIR=./calibrations/$DST
+DSTDIR=$TOPDIR/calib202007_$DST
+if [ ! -r $SRCDIR ]; then
+  echo Source directory does not exist: $SRCDIR
+  exit 1
+fi
+if [ -r $DSTDIR ]; then
+  echo Destination directory already exists: $DSTDIR
+  exit 1
+fi
+
+cp -r $SRCDIR $DSTDIR
+
+for DIR1 in $(find $DSTDIR -mindepth 1 -maxdepth 1 -type d); do
+  for DIR2 in $(find $DIR1 -mindepth 1 -maxdepth 1 -type d); do
+    makeIndex $DIR2
+  done
+  makeIndex $DIR1
+done
+makeIndex $DSTDIR
+makeIndex $DSTDIR/.. h
