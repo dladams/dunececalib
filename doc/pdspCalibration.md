@@ -98,3 +98,22 @@ This configuration may be created in ./fcl with the command
 makeCalibPdsp $DST
 </pre>
 The channel range configurations are also copied to the appropriate location in that directory.
+
+### Using the calibration
+
+To use the calibration, it must be installed on the fcl path ($FHICL_FILE_PATH), e.g. by copying the
+files in ./fcl to ./job.
+Note that the subdirectory structure in ./fcl for the channel range files must be preserved.
+
+The calibration will be available if detector configuration file is included in the job confguration.
+E.g., to plot the distribution of (area) gains for (locally installed) dataset jul20extv4, use 
+<pre>
+root [0] drawGainDist("jul20extv07")
+.
+.
+.
+calplots:   # bad: 156
+calplots:   # good: 15204
+Printing gaindist_jul20extv07.{png,tpad}
+</pre>
+Use the dataset name calib20191213_dec18ext to obtain the distribution for current default calibration.
