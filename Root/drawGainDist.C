@@ -23,6 +23,7 @@ void drawGainDist(string scal ="") {
   pp->hist()->GetXaxis()->CenterTitle();
   pp->add(ptxt);
   pp->centerAxisTitles();
+  pp->setCanvasSize(1400, 1000);
   // Print
   //string ofnam = "gaindist.{pdf,png,tpad}";
   string ofnam = "gaindist_" + scal + ".{png,tpad}";
