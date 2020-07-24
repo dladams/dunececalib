@@ -30,7 +30,7 @@ const AdcCalibData* makeAdcCalibData(string samName, string crNameIn, bool check
   if ( dstName == "ib3_b900" ) {
     subdsts.push_back("ib20200303");
     subdsts.push_back("ib20200306");
-  | else if ( dstName == "ib4" ) {
+  } else if ( dstName == "ib4" ) {
     subdsts.push_back("ib20200721off");
   } else {
     subdsts.push_back(dstName);
