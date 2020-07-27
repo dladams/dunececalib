@@ -26,7 +26,7 @@ void drawGainDist(string scal, string ssel ="", double ymax =0.0) {
   pp->hist()->GetXaxis()->CenterTitle();
   pp->centerAxisTitles();
   pp->setCanvasSize(1400, 1000);
-  if ( ymax > 0.0 ) pp->SetRangeY(0, ymax);
+  if ( ymax > 0.0 ) pp->setRangeY(0, ymax);
   // Print
   //string ofnam = "gaindist.{pdf,png,tpad}";
   string ofnam = "gaindist_" + scal;
