@@ -5,9 +5,15 @@
 //
 // Plots gain calibration.
 
+bool ibodd(int icha) {
+  if ( icha >= 400 && icha < 1040 ) return icha%2;
+  return (icha + 1)%2;
+}
+   
 TPadManipulator* calplots(string calname,
                           bool doDist =true, bool doDraw =true,
-                          string a_fnamout ="%CAL%.{tpad,png}") {
+                          string a_fnamout ="%CAL%.{tpad,png}",
+                          string ssel ="") {
   string myname = "calplots: ";
   using Index = unsigned int;
   DuneToolManager* pdtm = DuneToolManager::instance();
@@ -29,21 +35,37 @@ TPadManipulator* calplots(string calname,
     float gmin = 0.015;
     float gmax = 0.035;
     Index ng = 80;
-    string sttl = "Gains for " + calname + "; Gain [ke/(ADC count)/tick]; # channels";
-    TH1* phgAll = new TH1F("hgainsAll", sttl.c_str(), ng, gmin, gmax);
-    TH1* phgGoo = new TH1F("hgainsGoo", sttl.c_str(), ng, gmin, gmax);
-    TH1* phgBad = new TH1F("hgainsBad", sttl.c_str(), ng, gmin, gmax);
+    if ( calname.substr(9,3) == "ib4" ) {
+      gmin = 0.06;
+      gmax = 0.140;
+    }
+    bool skipOdd = ssel == "even";
+    bool skipEve = ssel == "odd";
+    bool skipIbOdd = ssel == "ibeven";
+    bool skipIbEve = ssel == "ibodd";
+    string sttl = "Gains for " + calname;
+    if ( skipOdd || skipIbOdd ) sttl += " even channels";
+    if ( skipEve || skipIbEve ) sttl += " odd channels";
+    string sttls = sttl + "; Gain [ke/(ADC count)/tick]; # channels";
+    TH1* phgAll = new TH1F("hgainsAll", sttls.c_str(), ng, gmin, gmax);
+    TH1* phgGoo = new TH1F("hgainsGoo", sttls.c_str(), ng, gmin, gmax);
+    TH1* phgBad = new TH1F("hgainsBad", sttls.c_str(), ng, gmin, gmax);
     vector<TH1*> hists = { phgAll, phgGoo, phgBad};
     for ( TH1* ph : hists ) {
       ph->SetLineWidth(2);
       ph->SetStats(0);
-      ph->SetTitle(sttl.c_str());
+      //ph->SetTitle(sttls.c_str());
     }
     phgBad->SetLineColor(2);
     phgBad->SetLineWidth(1);
     int nbad = 0;
     int ngoo = 0;
     for ( Index icha=0; icha<ncha; ++icha ) {
+      if ( skipOdd && icha%2 ) continue;
+      if ( skipEve && (icha+1)%2 ) continue;
+      if ( skipIbOdd && ibodd(icha) ) continue;
+      if ( skipIbEve && !ibodd(icha) ) continue;
+cout << "   " << icha << endl;
       int chs = pchs->get(icha);
       bool isBad = chs == 1 || chs == 3;
       float gain = pcal->value(icha);
