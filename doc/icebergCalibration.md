@@ -65,3 +65,16 @@ the fcl calibration files and many associated plots.
 The Iceberg-specific Root script [icebergCalib.C](../Root/Iceberg/icebergCalib.C)
 assigns names to standard fitting options and passes
 those to doCalib to carry out calibrations.
+
+The calibration plots and fcl files may be constructed with the command doCalibIceberg which takes
+the dataset name, fit version (see [icebergCalib.C](../Root/Iceberg/icebergCalib.C)) and 
+channel range (apau, apav, apaz1, apaz2) as arguments, e.g.
+<pre>
+doCalibIceberg ib4 v10 apaz1
+</pre>
+Substituting top for the channel range produces the top-level fcl.
+All fcl files are placed in calibrations/DST-VER/fcl where DST is the dataset name and VER is the fit version.
+
+The script I use to copy the calibration to my
+[web area](https://internal.dunescience.org/people/dladams/protodune/iceberg/calibrations)
+is [wcopy(wcopy)].

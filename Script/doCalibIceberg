@@ -1,0 +1,100 @@
+#!/bin/sh
+
+DST=$1
+VER=$2
+CR=$3
+CAL=$DST-$VER
+
+if [ -z "$CR" ]; then
+  echo Usage: $0 DST VERSION CR
+  echo "  CR = all, apau, apav, apaz1, apaz2, top"
+  exit 0
+fi
+
+if [ $CR = all ]; then
+  CRLINE="***************************************************************"
+  for CR in apau apav apaz1 apaz2 top; do
+    echo
+    echo $CRLINE
+    $0 $DST $CR
+    echo $CRLINE
+  done
+fi
+
+#OUTBASE=$HOME/wwwdune/protodune/iceberg/calibrations
+OUTBASE=./calibrations
+OUTDIR=$OUTBASE/$CAL
+FCLDIR=$OUTDIR/fcl
+
+if [ $CR != apau -a $CR != apav -a $CR != apaz1 -a $CR != apaz2 -a $CR != top ]; then
+  echo Invalid channel range: $CR
+  exit 1
+fi
+
+echo $DST $VER
+mkdir -p $OUTDIR
+mkdir -p $FCLDIR
+
+if [ $CR = top ]; then
+  CALTEMPLATE=$DUNECECALIB_DIR/data/calibTemplateIceberg.fcl
+  CALFCL=$FCLDIR/$CAL.fcl
+  UCAL=$(echo $CAL | sed 's/-/_/g')
+  echo Creating top-level fcl
+  if ! cat $CALTEMPLATE | sed "s/UCALIB/$UCAL/g" | sed "s/CALIB/$CAL/g" >$CALFCL; then
+    echo Creation failed.
+    exit 2
+  fi
+  exit 0
+fi
+
+CRNDIR=$OUTDIR/$CR
+if [ -r $CRNDIR ]; then
+  echo Output directory already exists: $CRNDIR
+  exit 1
+fi
+
+DSTLIST=runjobs/$DST.dsts
+DSTS=$DST
+if [ -r $DSTLIST ]; then
+  DSTS="$(cat $DSTLIST)"
+fi
+for DST in $DSTS; do
+  RUNLIST=runjobs/$DST.runs
+  if [ ! -r $RUNLIST ]; then
+    echo Dataset run list not found: $RUNLIST
+    exit 2
+  fi
+done
+
+rm *.png
+rm *_$CR.fcl
+rm chsum*.tpad
+root.exe -b -q '$DUNECECALIB_DIR/root/icebergCalib.C("'$DST'", "'$VER'", "'$CR'")'
+if ls *.png 2>/dev/null 1>/dev/null; then
+  rm -f $FCLDIR/*_$CR.fcl
+  CHSDIR=$OUTDIR/chsum
+  mkdir -p $CHSDIR
+  rm -f $CHSDIR/chsum*_$CR.png
+  rm -f $CHSDIR/chsum*_$CR.tpad
+  for NAME in Area fresArea Height fresHeight Shaping; do
+    echo Copying $NAME
+    PLTDIR=$OUTDIR/$NAME
+    mkdir $PLTDIR
+    cp ${NAME}_*.png $PLTDIR
+    makeIndex $PLTDIR
+  done
+  cp *_$CR.fcl $FCLDIR
+  makeIndex $FCLDIR k
+  cp chsum*.png chsum*.tpad $CHSDIR
+  makeIndex $CHSDIR k
+  makeIndex $OUTDIR
+else
+  echo Calibration png not found.
+  exit 3
+fi
+
+DIR=$FCLDIR
+while [ $DIR != $OUTBASE ]; do
+  DIR=$(dirname $DIR)
+  makeIndex $DIR k
+done

@@ -5,7 +5,8 @@ July 2020
 
 ### Introduction
 
-This documents summarizes the charge calibration procedure for protoDUNE run 1.
+This documents summarizes the charge calibration procedure for protoDUNE run 1
+(July 2018 - July 2020).
 The general goals and procedures for calibration are [here](procedure.md).
 The protoDUNE datasets and some calibration results are posted on the
 [ProtoDUNE calibration page](https://internal.dunescience.org/people/dladams/protodune/calibrations).

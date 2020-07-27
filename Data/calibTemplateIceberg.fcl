@@ -1,0 +1,42 @@
+# CALIB.fcl
+#
+
+tools.areaGain_UCALIB: {
+  tool_type: FclFileFloatArray
+  LogLevel: 1
+  Label: "areaGain_CALIB"
+  DefaultValue: 0.0
+  FileNames: [
+    "calib/iceberg/CALIB/areaGain_apau.fcl",
+    "calib/iceberg/CALIB/areaGain_apav.fcl",
+    "calib/iceberg/CALIB/areaGain_apaz1.fcl",
+    "calib/iceberg/CALIB/areaGain_apaz2.fcl"
+  ]
+}
+
+tools.heightGain_UCALIB: {
+  tool_type: FclFileFloatArray
+  LogLevel: 1
+  Label: "heightGain_CALIB"
+  DefaultValue: 0.0
+  FileNames: [
+    "calib/iceberg/CALIB/heightGain_apau.fcl",
+    "calib/iceberg/CALIB/heightGain_apav.fcl",
+    "calib/iceberg/CALIB/heightGain_apaz1.fcl",
+    "calib/iceberg/CALIB/heightGain_apaz2.fcl"
+  ]
+}
+
+tools.shapingTime_UCALIB: {
+  tool_type: FclFileFloatArray
+  LogLevel: 1
+  Label: "shapingTime_CALIB"
+  DefaultValue: 0.0
+  FileNames: [
+    "calib/iceberg/CALIB/shapingTime_apau.fcl",
+    "calib/iceberg/CALIB/shapingTime_apav.fcl",
+    "calib/iceberg/CALIB/shapingTime_apaz1.fcl",
+    "calib/iceberg/CALIB/shapingTime_apaz2.fcl"
+  ]
+}
+
