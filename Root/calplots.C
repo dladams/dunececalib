@@ -35,7 +35,10 @@ TPadManipulator* calplots(string calname,
     float gmin = 0.015;
     float gmax = 0.035;
     Index ng = 80;
-    if ( calname.substr(9,3) == "ib4" ) {
+    if ( calname.substr(9,4) == "ib4b" ) {
+      gmin = 0.030;
+      gmax = 0.055;
+    } else if ( calname.substr(9,3) == "ib4" ) {
       gmin = 0.06;
       gmax = 0.140;
     }
