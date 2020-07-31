@@ -77,4 +77,4 @@ All fcl files are placed in calibrations/DST-VER/fcl where DST is the dataset na
 
 The script I use to copy the calibration to my
 [web area](https://internal.dunescience.org/people/dladams/protodune/iceberg/calibrations)
-is [wcopy(wcopy)].
+is [wcopy](wcopy).
