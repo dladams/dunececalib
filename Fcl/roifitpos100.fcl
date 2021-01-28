@@ -8,7 +8,7 @@
 #
 # Caller must define sticky_code_flagger before including this.
 
-services.RawDigitPrepService.AdcChannelToolNames: [
+services.RawDigitPrepService.ToolNames: [
   "digitReader",                # Read RawDigit
   @local::sticky_code_flagger,  # Flag sticky codes
   "pd_adcPedestalFit",          # Find pedestal

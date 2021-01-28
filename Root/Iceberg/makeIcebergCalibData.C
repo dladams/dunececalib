@@ -34,6 +34,7 @@ const AdcCalibData* makeAdcCalibData(string samName, string crNameIn, bool check
     subdsts.push_back("ib20200721off");
   } else if ( dstName == "ib4b" ) {
     subdsts.push_back("ib20200730off");
+    subdsts.push_back("ib20200731");
   } else {
     subdsts.push_back(dstName);
   }
@@ -128,6 +129,29 @@ const AdcCalibData* makeAdcCalibData(string samName, string crNameIn, bool check
       runMap[18].push_back(6122);
       // no data runMap[19].push_back(6126);
       runMap[20].push_back(6124);
+    }
+    if ( subName == "ib20200731" ) {
+      //runMap[ 0].push_back(6166);
+      runMap[ 1].push_back(6170);
+      runMap[ 2].push_back(6147);
+      runMap[ 3].push_back(6148);
+      runMap[ 4].push_back(6149);
+      runMap[ 5].push_back(6150);
+      runMap[ 6].push_back(6175);
+      runMap[ 7].push_back(6152);
+      runMap[ 8].push_back(6167);
+      runMap[ 9].push_back(6168);
+      runMap[10].push_back(6169);
+      runMap[11].push_back(6156);
+      runMap[12].push_back(6157);
+      runMap[13].push_back(6158);
+      runMap[14].push_back(6159);
+      runMap[15].push_back(6172);
+      runMap[16].push_back(6161);
+      runMap[17].push_back(6162);
+      runMap[18].push_back(6177);
+      runMap[19].push_back(6164);
+      runMap[20].push_back(6174);
     }
     if ( subName == "ib4run6103" ) {
       //runMap[ 0].push_back(5853);

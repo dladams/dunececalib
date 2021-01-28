@@ -5,8 +5,8 @@
 #
 # Configuration to add the CE calibration ROI finder to the dataprep chain.
 
-services.RawDigitPrepService.AdcChannelToolNames: [
-  @sequence::services.RawDigitPrepService.AdcChannelToolNames,
+services.RawDigitPrepService.ToolNames: [
+  @sequence::services.RawDigitPrepService.ToolNames,
   "adcThresholdSignalFinder",   # Build ROIs
   "adcRoiFitter"
 ]
