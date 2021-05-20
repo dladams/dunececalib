@@ -13,7 +13,8 @@ bool ibodd(int icha) {
 TPadManipulator* calplots(string calname,
                           bool doDist =true, bool doDraw =true,
                           string a_fnamout ="%CAL%.{tpad,png}",
-                          string ssel ="") {
+                          string ssel ="",
+                          unsigned int ng =0, double gmin =0.0, double gmax =0.0) {
   string myname = "calplots: ";
   using Index = unsigned int;
   DuneToolManager* pdtm = DuneToolManager::instance();
@@ -32,15 +33,20 @@ TPadManipulator* calplots(string calname,
   cout << "Calibration label: " << pcal->label() << endl;
   cout << "Calibration channel count: " << ncha << endl;
   if ( doDist ) {
-    float gmin = 0.015;
-    float gmax = 0.035;
-    Index ng = 80;
-    if ( calname.substr(9,4) == "ib4b" ) {
-      gmin = 0.030;
-      gmax = 0.055;
-    } else if ( calname.substr(9,3) == "ib4" ) {
-      gmin = 0.06;
-      gmax = 0.140;
+    if ( ng == 0 ) {
+      gmin = 0.015;
+      gmax = 0.035;
+      ng = 80;
+      if ( calname.substr(9,4) == "ib4b" ) {
+        gmin = 0.030;
+        gmax = 0.055;
+      } else if ( calname.substr(9,3) == "ib4" ) {
+        gmin = 0.06;
+        gmax = 0.140;
+      } else if ( calname.substr(9,12) == "apa40_202101" ) {
+        gmin = 0.06;
+        gmax = 0.10;
+      }
     }
     bool skipOdd = ssel == "even";
     bool skipEve = ssel == "odd";

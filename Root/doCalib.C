@@ -28,7 +28,7 @@ AdcCalibGraphs* doCalib(string dstName, string fitName, string crName,
   cg.makeMultiChannelPads("Shaping", 4, 4, 1400, 1000);
   //cg.printMultiChannelPads();
   string outdir = "calibrations/" + dstName;
-  if ( fitName.size() ) outdir += "-" + fitName;
+  if ( fitName.size() ) outdir += "_" + fitName;
   string fcldir = outdir + "/fcl/";
   string crdir = outdir + "/" + crName + "/";
   if ( doShaping ) {
@@ -93,7 +93,10 @@ AdcCalibGraphs* doCalib(string dstName, string fitName, string crName,
       cout << myname << "Unable to create directory." << endl;
     } else {
       chsumName = dir + "chsum_area_csdof_" + crName + ".{png,tpad}";
-      cg.drawChannelSummaryPadBare("Area", "csdof", "", 0, 1500)->print(chsumName);
+      TPadManipulator* pman = cg.drawChannelSummaryPadBare("Area", "csdof", "", 0, 1500);
+      pman->setLogRangeY(0.1, 1.e4);
+      pman->setLogY();
+      pman->print(chsumName);
     }
     dir = sumdir + "height_slope/";
     com = "mkdir -p " + dir;
@@ -109,7 +112,8 @@ AdcCalibGraphs* doCalib(string dstName, string fitName, string crName,
       cout << myname << "Unable to create directory." << endl;
     } else {
       chsumName = dir + "chsum_shaping_mean_" + crName + ".{png,tpad}";
-      cg.drawChannelSummaryPadBare("Shaping", "Pedestal", "shapingFitPlus", 4.0, 4.8)->print(chsumName);
+      //cg.drawChannelSummaryPadBare("Shaping", "Pedestal", "shapingFitPlus", 4.0, 4.8)->print(chsumName);
+      cg.drawChannelSummaryPadBare("Shaping", "Pedestal", "shapingFitPlus", 0.0, 7.5)->print(chsumName);
     }
   }
   return pcg;

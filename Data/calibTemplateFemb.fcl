@@ -1,0 +1,33 @@
+# CALIB.fcl
+#
+
+tools.areaGain_CALIB: {
+  tool_type: FclFileFloatArray
+  LogLevel: 1
+  Label: "areaGain_CALIB"
+  DefaultValue: 0.0
+  FileNames: [
+    "calib/CALIB/areaGain_all.fcl"
+  ]
+}
+
+tools.heightGain_CALIB: {
+  tool_type: FclFileFloatArray
+  LogLevel: 1
+  Label: "heightGain_CALIB"
+  DefaultValue: 0.0
+  FileNames: [
+    "calib/CALIB/heightGain_all.fcl"
+  ]
+}
+
+tools.shapingTime_CALIB: {
+  tool_type: FclFileFloatArray
+  LogLevel: 1
+  Label: "shapingTime_CALIB"
+  DefaultValue: 0.0
+  FileNames: [
+    "calib/CALIB/shapingTime_all.fcl"
+  ]
+}
+

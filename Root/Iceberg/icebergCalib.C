@@ -1,4 +1,4 @@
-// icbergCalib.C
+// icebergCalib.C
 //
 // David Adams
 // May 2020

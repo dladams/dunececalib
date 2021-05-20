@@ -1,0 +1,59 @@
+#!/bin/sh
+#
+# Create detector calibration fcl from channel-range calibrations.
+
+CAL=$1
+TYPE=Femb
+if [ -z "$CAL" ]; then
+  echo Usage: $0 CAL
+  echo " e.g. CAL = jul20extv07"
+  exit 0
+fi
+
+DIR="."
+
+CALTEMPLATE=$DUNECECALIB_DIR/data/calibTemplate$TYPE.fcl
+CALSRC=$DIR/calibrations/$CAL/fcl
+FCLDIR=$DIR/job
+CALFCL=$FCLDIR/$CAL.fcl
+CALDIR=$FCLDIR/calib/$CAL
+
+if [ -r $CALFCL ]; then
+  echo Calibration fcl already exists: $CALFCL
+  exit 1
+fi
+
+if [ -r $CALDIR ]; then
+  echo Calibration directory already exists: $CALDIR
+  exit 1
+fi
+
+if [ ! -r $CALSRC ]; then
+  echo Calibration source not found: $CALSRC
+  exit 1
+fi
+
+if [ ! -r $CALTEMPLATE ]; then
+  echo Calibration template not found: $CALTEMPLATE
+  exit 1
+fi
+
+echo Creating destination directory $CALDIR
+if ! mkdir $CALDIR; then
+  echo Creation failed.
+  exit 2
+fi
+
+echo Copying calibration fcl.
+if ! cp $CALSRC/*.fcl $CALDIR; then
+  echo Copy failed.
+  exit 2
+fi
+
+echo Creating top-level fcl
+if ! cat $CALTEMPLATE | sed "s/CALIB/$CAL/g" >$CALFCL; then
+  echo Creation failed.
+  exit 2
+fi
+
+echo Calibration created: $CALFCL
