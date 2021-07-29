@@ -7,7 +7,7 @@
 #include <map>
 #include <memory>
 #include "dune/DuneInterface/Tool/IndexMapTool.h"
-#include "dune/DuneCommon/TPadManipulator.h"
+#include "dune/DuneCommon/Utility/TPadManipulator.h"
 
 #include "TGraphErrors.h"
 

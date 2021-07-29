@@ -4,9 +4,9 @@
 
 #include "AdcCalibGraphs.h"
 #include "AdcCalibData.h"
-#include "dune/DuneCommon/LineColors.h"
-#include "dune/DuneCommon/offsetLine.h"
-#include "dune/DuneCommon/StringManipulator.h"
+#include "dune/DuneCommon/Utility/LineColors.h"
+#include "dune/DuneCommon/Utility/offsetLine.h"
+#include "dune/DuneCommon/Utility/StringManipulator.h"
 #include "larevt/CalibrationDBI/Interface/ChannelStatusService.h"
 #include "dune/ArtSupport/DuneToolManager.h"
 #include <string>
