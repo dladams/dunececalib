@@ -30,7 +30,7 @@ Instead of (or in addition to) the package dunenoise, check out and set up up th
 
 Choose the runs to be used for the calibration and create and list of raw data files for each DAC setting.
 The examples here assume the file is [./infiles.txt](infiles.txt) which lists the files for run 6045
-taken 2108-12-05 with external pulser DAC setting 3 and HV off.
+taken 2018-12-05 with external pulser DAC setting 3 and HV off.
 My [protoDUNE run list](https://wiki.dunescience.org/wiki/ProtoDUNE_commissioning_runs_(dla)) lists
 runs I have used for calibration and other studies.
 There are links to other run lists at the bottom of that page.
