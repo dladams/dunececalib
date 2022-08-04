@@ -45,7 +45,7 @@ $HOME/data/dune/datasets or any subdirectory thereof and may contain logical fil
 ### 2. Area evaluation
 
 We begin by running lar jobs to evaluate the mean area for each channel at each DAC setting.
-The top-level configuration [roifitpos100.fcl](../fcl/roifitpos100.fcl) provides the starting point.
+The top-level configuration [roifitpos100.fcl](../Fcl/roifitpos100.fcl) provides the starting point.
 It configures a job that reads raw data and runs the indicated dataprep tool sequence.
 That sequence reads raw data, finds pedestals, applies unit calibration (gain=1) and mitigates sticky codes.
 These are followed by a signal finder adcThresholdSignalFinder which identifies ROIs (regions of interest)
