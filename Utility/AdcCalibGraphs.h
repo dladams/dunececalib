@@ -6,8 +6,8 @@
 #include <string>
 #include <map>
 #include <memory>
-#include "dune/DuneInterface/Tool/IndexMapTool.h"
-#include "dune/DuneCommon/Utility/TPadManipulator.h"
+#include "dunecore/DuneInterface/Tool/IndexMapTool.h"
+#include "dunecore/DuneCommon/Utility/TPadManipulator.h"
 
 #include "TGraphErrors.h"
 

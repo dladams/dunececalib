@@ -4,11 +4,11 @@
 
 #include "AdcCalibGraphs.h"
 #include "AdcCalibData.h"
-#include "dune/DuneCommon/Utility/LineColors.h"
-#include "dune/DuneCommon/Utility/offsetLine.h"
-#include "dune/DuneCommon/Utility/StringManipulator.h"
+#include "dunecore/DuneCommon/Utility/LineColors.h"
+#include "dunecore/DuneCommon/Utility/offsetLine.h"
+#include "dunecore/DuneCommon/Utility/StringManipulator.h"
 #include "larevt/CalibrationDBI/Interface/ChannelStatusService.h"
-#include "dune/ArtSupport/DuneToolManager.h"
+#include "dunecore/ArtSupport/DuneToolManager.h"
 #include <string>
 #include <sstream>
 #include <fstream>
