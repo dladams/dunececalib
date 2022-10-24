@@ -40,4 +40,5 @@ Details for Iceberg are in [doc/icebergCalibration.md](doc/icebergCalibration.md
 
 ### Some useful links.
 * [DA's run list] (https://wiki.dunescience.org/wiki/ProtoDUNE_commissioning_runs_(dla))
-* [DA last talk of protoDUNE-I-SP calibration](https://indico.fnal.gov/event/22661/contributions/68849/attachments/43332/52259/adams_dunepdsimreco_20191211_calib.pdf)
+* DA paper on protoDUNE-I-SP charge calibration: [DUNE doc 15523](https://docs.dunescience.org/cgi-bin/sso/ShowDocument?docid=15523)
+* * [DA last talk of protoDUNE-I-SP calibration](https://indico.fnal.gov/event/22661/contributions/68849/attachments/43332/52259/adams_dunepdsimreco_20191211_calib.pdf)
